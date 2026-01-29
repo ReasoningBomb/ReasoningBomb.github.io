@@ -1,0 +1,12 @@
+title: "ReasoningBomb"
+description: "A Stealthy Denial-of-Service Attack by Inducing Pathologically Long Reasoning in Large Reasoning Models"
+baseurl: ""
+url: "https://ReasoningBomb.github.io"
+
+plugins:
+  - jekyll-seo-tag
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - vendor

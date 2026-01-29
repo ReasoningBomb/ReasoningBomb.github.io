@@ -1,0 +1,397 @@
+/* === Base Reset & Variables === */
+:root {
+  --color-bg: #ffffff;
+  --color-text: #1a1a2e;
+  --color-text-secondary: #4a4a6a;
+  --color-accent: #c0392b;
+  --color-accent-light: #e74c3c;
+  --color-accent-bg: #fdf2f0;
+  --color-border: #e0e0e8;
+  --color-card-bg: #f8f8fc;
+  --color-code-bg: #f4f4f8;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  --max-width: 960px;
+  --section-gap: 4rem;
+}
+
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  color: var(--color-text);
+  background: var(--color-bg);
+  line-height: 1.7;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* === Layout === */
+.container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+section {
+  padding: var(--section-gap) 0;
+}
+
+section + section {
+  border-top: 1px solid var(--color-border);
+}
+
+/* === Hero Section === */
+.hero {
+  text-align: center;
+  padding: 5rem 0 3rem;
+  background: linear-gradient(180deg, var(--color-accent-bg) 0%, var(--color-bg) 100%);
+}
+
+.hero h1 {
+  font-size: 2.8rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.5rem;
+  color: var(--color-accent);
+}
+
+.hero .subtitle {
+  font-size: 1.15rem;
+  color: var(--color-text-secondary);
+  max-width: 720px;
+  margin: 0 auto 2rem;
+  line-height: 1.6;
+  font-weight: 400;
+}
+
+.hero .venue {
+  font-size: 0.95rem;
+  color: var(--color-text-secondary);
+  margin-bottom: 1.5rem;
+  font-style: italic;
+}
+
+/* === Author List === */
+.authors {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.3rem 1.5rem;
+  margin-bottom: 1.5rem;
+  font-size: 1.0rem;
+}
+
+.authors .author {
+  white-space: nowrap;
+}
+
+.authors .author a {
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+.authors .author a:hover {
+  color: var(--color-accent);
+}
+
+.authors .corresponding {
+  font-weight: 600;
+}
+
+.affiliations {
+  font-size: 0.88rem;
+  color: var(--color-text-secondary);
+  margin-bottom: 2rem;
+  line-height: 1.8;
+}
+
+.affiliations sup {
+  color: var(--color-accent);
+  font-weight: 600;
+  margin-right: 2px;
+}
+
+/* === Buttons === */
+.btn-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.3rem;
+  border-radius: 8px;
+  font-size: 0.92rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  border: 1.5px solid var(--color-border);
+  color: var(--color-text);
+  background: var(--color-bg);
+}
+
+.btn:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+}
+
+.btn.primary {
+  background: var(--color-accent);
+  color: #fff;
+  border-color: var(--color-accent);
+}
+
+.btn.primary:hover {
+  background: var(--color-accent-light);
+  border-color: var(--color-accent-light);
+  color: #fff;
+}
+
+/* === Section Headers === */
+.section-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: var(--color-text);
+  letter-spacing: -0.01em;
+}
+
+/* === Abstract === */
+.abstract-text {
+  font-size: 1.0rem;
+  line-height: 1.8;
+  color: var(--color-text-secondary);
+  text-align: justify;
+}
+
+/* === Highlight Stats === */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.2rem;
+  margin-top: 1.5rem;
+}
+
+.stat-card {
+  background: var(--color-card-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.stat-card .number {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-accent);
+  font-family: var(--font-mono);
+}
+
+.stat-card .label {
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+  margin-top: 0.3rem;
+}
+
+/* === Figures === */
+.figure-block {
+  margin: 2rem 0;
+}
+
+.figure-block img {
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+}
+
+.figure-block.half img {
+  width: 85%;
+  display: block;
+  margin: 0 auto;
+}
+
+.figure-caption {
+  font-size: 0.88rem;
+  color: var(--color-text-secondary);
+  margin-top: 0.75rem;
+  text-align: center;
+  line-height: 1.6;
+}
+
+/* === Properties Table === */
+.properties-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  font-size: 0.9rem;
+}
+
+.properties-table th,
+.properties-table td {
+  padding: 0.7rem 1rem;
+  text-align: center;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.properties-table th {
+  background: var(--color-card-bg);
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--color-text-secondary);
+}
+
+.properties-table td:first-child {
+  text-align: left;
+  font-weight: 500;
+}
+
+.properties-table tr:hover {
+  background: var(--color-accent-bg);
+}
+
+.properties-table .highlight-row {
+  background: var(--color-accent-bg);
+  font-weight: 600;
+}
+
+.properties-table .check {
+  color: #27ae60;
+}
+
+.properties-table .cross {
+  color: #c0392b;
+}
+
+/* === Method Diagram === */
+.method-steps {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.2rem;
+  margin: 1.5rem 0;
+}
+
+.method-step {
+  background: var(--color-card-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+
+.method-step h3 {
+  font-size: 1.0rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--color-accent);
+}
+
+.method-step p {
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+}
+
+/* === Results === */
+.results-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin: 1.5rem 0;
+}
+
+.results-grid .figure-block {
+  margin: 0;
+}
+
+/* === BibTeX === */
+.bibtex-block {
+  background: var(--color-code-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 1.25rem 1.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  line-height: 1.6;
+  overflow-x: auto;
+  position: relative;
+  white-space: pre;
+}
+
+.copy-btn {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  padding: 0.3rem 0.6rem;
+  font-size: 0.78rem;
+  cursor: pointer;
+  color: var(--color-text-secondary);
+  transition: all 0.2s;
+}
+
+.copy-btn:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+/* === Footer === */
+footer {
+  text-align: center;
+  padding: 2rem 0;
+  border-top: 1px solid var(--color-border);
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+}
+
+/* === Responsive === */
+@media (max-width: 768px) {
+  .hero h1 {
+    font-size: 2rem;
+  }
+
+  .hero .subtitle {
+    font-size: 1rem;
+  }
+
+  .method-steps,
+  .results-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .container {
+    padding: 0 1.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero h1 {
+    font-size: 1.6rem;
+  }
+}
