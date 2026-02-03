@@ -12,14 +12,14 @@ title: "ReasoningBomb: A Stealthy Denial-of-Service Attack by Inducing Pathologi
     </p>
 
     <div class="authors">
-      <span class="author corresponding"><a href="#">Xiaogeng Liu</a><sup>1*</sup></span>
-      <span class="author"><a href="#">Xinyan Wang</a><sup>2</sup></span>
-      <span class="author"><a href="#">Yechao Zhang</a><sup>3</sup></span>
-      <span class="author"><a href="#">Sanjay Kariyappa</a><sup>4</sup></span>
-      <span class="author"><a href="#">Chong Xiang</a><sup>4</sup></span>
-      <span class="author"><a href="#">Muhao Chen</a><sup>5</sup></span>
-      <span class="author"><a href="#">G. Edward Suh</a><sup>4,6</sup></span>
-      <span class="author corresponding"><a href="#">Chaowei Xiao</a><sup>1*</sup></span>
+      <span class="author"><a href="https://xiaogeng-liu.com/">Xiaogeng Liu</a><sup>1*</sup></span>
+      <span class="author">Xinyan Wang<sup>2</sup></span>
+      <span class="author"><a href="https://yechao-zhang.github.io/">Yechao Zhang</a><sup>3</sup></span>
+      <span class="author"><a href="https://sanjaykariyappa.github.io/">Sanjay Kariyappa</a><sup>4</sup></span>
+      <span class="author"><a href="https://xiangchong.xyz/">Chong Xiang</a><sup>4</sup></span>
+      <span class="author"><a href="https://muhaochen.github.io/">Muhao Chen</a><sup>5</sup></span>
+      <span class="author"><a href="https://tsg.ece.cornell.edu/people/g-edward-suh/">G. Edward Suh</a><sup>4,6</sup></span>
+      <span class="author"><a href="https://xiaocw11.github.io/">Chaowei Xiao</a><sup>1*</sup></span>
     </div>
 
     <div class="affiliations">
@@ -33,33 +33,33 @@ title: "ReasoningBomb: A Stealthy Denial-of-Service Attack by Inducing Pathologi
     </div>
 
     <div class="btn-row">
-      <a href="#" class="btn primary"><i class="fas fa-file-pdf"></i> Paper</a>
-      <a href="#" class="btn"><i class="fab fa-github"></i> Code (Coming Soon)</a>
-      <a href="#" class="btn"><i class="fas fa-database"></i> Data (Coming Soon)</a>
+      <a href="https://arxiv.org/abs/2602.00154" class="btn primary"><i class="fas fa-file-pdf"></i> Paper</a>
+      <a href="https://github.com/SaFo-Lab/ReasoningBomb" class="btn"><i class="fab fa-github"></i> Code</a>
+      <a href="https://huggingface.co/datasets/ReasoningBomb/ReasoningBomb" class="btn"><i class="fas fa-database"></i> Dataset</a>
       <a href="#bibtex" class="btn"><i class="fas fa-quote-right"></i> BibTeX</a>
     </div>
   </div>
 </div>
 
 <!-- ====== Key Numbers ====== -->
-<section>
+<section class="stats-section">
   <div class="container">
     <div class="stats-grid">
       <div class="stat-card">
-        <div class="number">286.7&times;</div>
-        <div class="label">Avg. Amplification Ratio</div>
-      </div>
-      <div class="stat-card">
         <div class="number">18,759</div>
         <div class="label">Avg. Completion Tokens</div>
+      </div>
+      <div class="stat-card">
+        <div class="number">286.69&times;</div>
+        <div class="label">Amplification Ratio</div>
       </div>
       <div class="stat-card">
         <div class="number">98.4%</div>
         <div class="label">Detection Bypass Rate</div>
       </div>
       <div class="stat-card">
-        <div class="number">10</div>
-        <div class="label">Victim Models Evaluated</div>
+        <div class="number">4.39&times;10<sup>5</sup></div>
+        <div class="label">Training Speedup</div>
       </div>
     </div>
   </div>
@@ -70,8 +70,40 @@ title: "ReasoningBomb: A Stealthy Denial-of-Service Attack by Inducing Pathologi
   <div class="container">
     <h2 class="section-title">Abstract</h2>
     <p class="abstract-text">
-      Large Reasoning Models (LRMs) represent a paradigm shift in AI, generating explicit reasoning traces before producing answers. While this enhances problem-solving, it introduces a critical security vulnerability: the reasoning phase incurs substantial computational cost per request. In this work, we expose <strong>Prompt-Induced Inference-Time Denial-of-Service (PI-DoS)</strong>&mdash;an attack where adversaries craft short, natural-looking prompts that force victim LRMs into pathologically long reasoning traces, consuming disproportionate compute resources. We formalize three essential properties any practical PI-DoS attack must satisfy: <em>amplification</em> (short inputs trigger massive outputs), <em>stealthiness</em> (prompts evade detection), and <em>optimizability</em> (attack generation scales efficiently). We show that no existing method satisfies all three simultaneously. To address this, we propose <strong>ReasoningBomb</strong>, an RL-based framework that trains a compact LRM to generate diverse, high-amplification attack prompts using a constant-time surrogate reward, achieving a <strong>439,000&times; speedup</strong> over direct victim feedback. ReasoningBomb achieves an average <strong>286.7&times; input-to-output amplification</strong> across 10 victim models (including Claude, GPT, and Gemini), while maintaining a <strong>98.4% bypass rate</strong> against dual-stage detection. In real-world simulations, just 10% malicious traffic degrades benign throughput by up to 49.8%.
+      Large reasoning models (LRMs) extend large language models with explicit multi-step reasoning traces, but this capability introduces a new class of <strong>prompt-induced inference-time denial-of-service (PI-DoS)</strong> attacks that exploit the high computational cost of reasoning. We first formalize inference cost for LRMs and define PI-DoS, then prove that any practical PI-DoS attack should satisfy three properties: (1) a high <em>amplification ratio</em>, where each query induces a disproportionately long reasoning trace relative to its own length; (2) <em>stealthiness</em>, in which prompts and responses remain on the natural language manifold and evade distribution shift detectors; and (3) <em>optimizability</em>, in which the attack supports efficient optimization without being slowed by its own success.
     </p>
+    <p class="abstract-text abstract-continued">
+      Under this framework, we present <strong>ReasoningBomb</strong>, a reinforcement-learning-based PI-DoS framework that trains a large reasoning-model attacker to generate short natural prompts that drive victim LRMs into pathologically long reasoning. ReasoningBomb uses a two-stage pipeline combining supervised fine-tuning under a strict token budget with GRPO-based reinforcement learning, guided by a constant-time surrogate reward computed from victim model hidden states via a lightweight MLP. Across seven open-source models and three commercial LRMs, ReasoningBomb induces an average of <strong>18,759 completion tokens</strong> and <strong>19,263 reasoning tokens</strong>, surpassing the runner-up baseline by 35% in completion tokens and 38% in reasoning tokens, while achieving <strong>286.7&times;</strong> input-to-output amplification ratio and <strong>98.4%</strong> bypass rate against dual-stage detection.
+    </p>
+  </div>
+</section>
+
+<!-- ====== Why This Matters ====== -->
+<section>
+  <div class="container">
+    <h2 class="section-title">Why This Matters</h2>
+    <div class="callout">
+      <p>
+        The cumulative inference-time computational cost of serving LRMs has grown to rival or exceed one-time training costs at scale. For an input of L<sub>in</sub> tokens, the provider's per-request cost grows as C<sub>req</sub> &approx; &kappa;(L<sub>in</sub> + L<sub>rp</sub> + L<sub>out</sub>), where reasoning length L<sub>rp</sub> can substantially exceed output length L<sub>out</sub>. This cost structure interacts poorly with <strong>subscription-based pricing</strong> (e.g., ChatGPT Plus, SuperGrok), where users pay a fixed fee while providers bear variable costs.
+      </p>
+    </div>
+    <div class="impact-grid">
+      <div class="impact-card">
+        <div class="impact-icon"><i class="fas fa-dollar-sign"></i></div>
+        <h3>Economic Asymmetry</h3>
+        <p>OpenAI CEO Sam Altman noted that users being "extra polite and verbose with ChatGPT was costing OpenAI tens of millions of dollars" in additional inference cost.</p>
+      </div>
+      <div class="impact-card">
+        <div class="impact-icon"><i class="fas fa-server"></i></div>
+        <h3>Resource Exhaustion</h3>
+        <p>PI-DoS reflects "Unbounded Consumption" in OWASP 2025 Top 10, where adversaries exploit adaptive computation to inflate per-request cost and degrade service for legitimate users.</p>
+      </div>
+      <div class="impact-card">
+        <div class="impact-icon"><i class="fas fa-users"></i></div>
+        <h3>Multi-Account Amplification</h3>
+        <p>Adversaries can maintain multiple subscriptions in parallel, distributing adversarial prompts to circumvent per-account rate limits and force providers to process many high-cost requests simultaneously.</p>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -79,12 +111,12 @@ title: "ReasoningBomb: A Stealthy Denial-of-Service Attack by Inducing Pathologi
 <section>
   <div class="container">
     <h2 class="section-title">Threat Model</h2>
-    <p class="abstract-text" style="margin-bottom: 1.5rem;">
-      The adversary exploits subscription-based LRM services (e.g., ChatGPT Plus, SuperGrok), where users pay a fixed fee while providers bear variable per-request costs. By crafting prompts that induce pathologically long reasoning traces, a small number of attackers can monopolize compute resources and degrade service for legitimate users.
+    <p class="abstract-text section-intro">
+      We consider adversaries with legitimate access to LRM services via subscription tiers (e.g., ChatGPT Plus, SuperGrok) that enforce message-rate quotas rather than per-token billing. These pricing schemes create a fundamental economic asymmetry: while users pay a fixed fee, providers bear variable costs C<sub>req</sub> = &kappa;(L<sub>in</sub> + L<sub>rp</sub> + L<sub>out</sub>) that scale sharply with reasoning trace length. The adversary's goal is to craft prompts that drive per-request cost far beyond benign traffic by inducing pathologically long reasoning traces. To amplify impact, adversaries can maintain multiple subscriptions in parallel, distributing adversarial prompts to circumvent per-account rate limits while forcing providers to process many high-cost requests simultaneously.
     </p>
     <div class="figure-block half">
-      <img src="static/figures/threat.png" alt="Threat model illustration showing multi-account PI-DoS attack strategy">
-      <p class="figure-caption"><strong>Figure 1.</strong> Overview of the PI-DoS threat model. Adversaries use multiple subscription accounts to submit short, natural-looking prompts that trigger disproportionately long reasoning traces, consuming excessive compute and degrading service for benign users.</p>
+      <img src="static/figures/threat.png" alt="Threat model illustration showing how adversaries use multiple subscription accounts to submit short prompts that trigger disproportionately long reasoning traces, consuming server resources" loading="lazy">
+      <p class="figure-caption"><strong>Figure 1.</strong> Illustration of PI-DoS threat model. Adversaries craft malicious prompts that induce pathologically long reasoning traces compared to benign users. By launching attacks from multiple accounts, adversaries inflict disproportionate financial harm, exhaust computational resources, and degrade service quality.</p>
     </div>
   </div>
 </section>
@@ -93,49 +125,67 @@ title: "ReasoningBomb: A Stealthy Denial-of-Service Attack by Inducing Pathologi
 <section>
   <div class="container">
     <h2 class="section-title">Three Essential Properties of PI-DoS Attacks</h2>
-    <p class="abstract-text" style="margin-bottom: 1.5rem;">
-      We formalize three properties that any practical PI-DoS attack must satisfy simultaneously. No existing method achieves all three&mdash;ReasoningBomb is the first.
+    <p class="abstract-text section-intro">
+      We formally prove that these three properties are necessary for any practical PI-DoS attack. Through this analytical framework, we uncover fundamental limitations of existing methods: <strong>no existing work satisfies all three properties simultaneously</strong>.
     </p>
+
+    <div class="properties-cards">
+      <div class="property-card">
+        <div class="property-icon"><i class="fas fa-expand-arrows-alt"></i></div>
+        <h3>Amplification</h3>
+        <p>A practical PI-DoS attack must make each cheap, short query impose a disproportionately large computational burden. We prove that shorter prompts achieve higher amplification ratios under real serving policies, so short prompts that trigger extensive reasoning are optimal.</p>
+      </div>
+      <div class="property-card">
+        <div class="property-icon"><i class="fas fa-user-secret"></i></div>
+        <h3>Stealthiness</h3>
+        <p>Real-world deployments employ input filters, output monitors, and joint detectors. We prove that attacks using abnormal prompts or inducing abnormal outputs create large distributional shifts easily flagged by detectors. Prompts must remain on the natural-language manifold.</p>
+      </div>
+      <div class="property-card">
+        <div class="property-icon"><i class="fas fa-bolt"></i></div>
+        <h3>Optimizability</h3>
+        <p>If the attacker uses victim's actual reasoning length as reward, evaluation time grows with attack success, creating a self-defeating feedback loop. Practical PI-DoS requires <em>constant-time surrogate feedback</em> that remains efficient as attacks improve.</p>
+      </div>
+    </div>
 
     <table class="properties-table">
       <thead>
         <tr>
-          <th>Method</th>
-          <th>Amplification</th>
-          <th>Stealthiness</th>
-          <th>Optimizability</th>
+          <th scope="col">Method</th>
+          <th scope="col">Amplification</th>
+          <th scope="col">Stealthiness</th>
+          <th scope="col">Optimizability</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td>Manual Puzzles (AIME)</td>
-          <td class="check"><i class="fas fa-check"></i></td>
-          <td class="check"><i class="fas fa-check"></i></td>
-          <td class="cross"><i class="fas fa-times"></i></td>
+          <td>Manual Puzzles</td>
+          <td class="check"><i class="fas fa-check" aria-label="Yes"></i></td>
+          <td class="check"><i class="fas fa-check" aria-label="Yes"></i></td>
+          <td class="cross"><i class="fas fa-times" aria-label="No"></i></td>
         </tr>
         <tr>
-          <td>GCG-DoS / Engorgio</td>
-          <td class="check"><i class="fas fa-check"></i></td>
-          <td class="cross"><i class="fas fa-times"></i></td>
-          <td class="check"><i class="fas fa-check"></i></td>
+          <td>GCG-DoS / Engorgio / Excessive</td>
+          <td class="check"><i class="fas fa-check" aria-label="Yes"></i></td>
+          <td class="cross"><i class="fas fa-times" aria-label="No"></i></td>
+          <td class="check"><i class="fas fa-check" aria-label="Yes"></i></td>
         </tr>
         <tr>
           <td>AutoDoS / CatAttack</td>
-          <td class="cross"><i class="fas fa-times"></i></td>
-          <td class="check"><i class="fas fa-check"></i></td>
-          <td class="cross"><i class="fas fa-times"></i></td>
+          <td class="cross"><i class="fas fa-times" aria-label="No"></i></td>
+          <td class="check"><i class="fas fa-check" aria-label="Yes"></i></td>
+          <td class="cross"><i class="fas fa-times" aria-label="No"></i></td>
         </tr>
         <tr>
           <td>ICL / POT / ThinkTrap</td>
-          <td class="check"><i class="fas fa-check"></i></td>
-          <td class="check"><i class="fas fa-check"></i></td>
-          <td class="cross"><i class="fas fa-times"></i></td>
+          <td class="check"><i class="fas fa-check" aria-label="Yes"></i></td>
+          <td class="check"><i class="fas fa-check" aria-label="Yes"></i></td>
+          <td class="cross"><i class="fas fa-times" aria-label="No"></i></td>
         </tr>
         <tr class="highlight-row">
-          <td>ReasoningBomb (Ours)</td>
-          <td class="check"><i class="fas fa-check"></i></td>
-          <td class="check"><i class="fas fa-check"></i></td>
-          <td class="check"><i class="fas fa-check"></i></td>
+          <td><strong>ReasoningBomb (Ours)</strong></td>
+          <td class="check"><i class="fas fa-check" aria-label="Yes"></i></td>
+          <td class="check"><i class="fas fa-check" aria-label="Yes"></i></td>
+          <td class="check"><i class="fas fa-check" aria-label="Yes"></i></td>
         </tr>
       </tbody>
     </table>
@@ -146,121 +196,166 @@ title: "ReasoningBomb: A Stealthy Denial-of-Service Attack by Inducing Pathologi
 <section>
   <div class="container">
     <h2 class="section-title">Method</h2>
-    <p class="abstract-text" style="margin-bottom: 1.5rem;">
-      ReasoningBomb uses an RL-based framework with four key components. The attacker model is trained via a two-stage pipeline (SFT + GRPO-based RL) to generate diverse, high-amplification prompts within strict token budgets.
+    <p class="abstract-text section-intro">
+      ReasoningBomb employs a multi-component architecture trained via reinforcement learning. The attacker model generates PI-DoS attack prompts, a length predictor evaluates their expected effectiveness using constant-time feedback, and a diversity evaluator encourages exploration of varied attack strategies.
     </p>
 
     <div class="method-steps">
       <div class="method-step">
-        <h3>1. Attacker Model</h3>
-        <p>A trainable LRM generates attack prompts in a structured format, using its own reasoning to craft adversarial puzzles within strict token budgets.</p>
+        <div class="step-number">1</div>
+        <h3>Attacker Model</h3>
+        <p>A trainable LRM generates attack prompts through reasoning. The model outputs in the format <code>&lt;think&gt; meta-reasoning &lt;/think&gt; adversarial puzzle</code>, where meta-reasoning allows explicit deliberation about attack strategies before producing the final prompt.</p>
       </div>
       <div class="method-step">
-        <h3>2. Length Predictor</h3>
-        <p>A lightweight MLP trained on frozen victim hidden states predicts reasoning trace length in constant time, providing a 439,000&times; speedup over direct feedback.</p>
+        <div class="step-number">2</div>
+        <h3>Length Predictor</h3>
+        <p>Provides constant-time reward signals by estimating the expected reasoning trace length a prompt would induce. Rather than expensive autoregressive generation, we extract hidden states from a frozen victim model via a single forward pass, then apply a lightweight MLP to predict the length.</p>
       </div>
       <div class="method-step">
-        <h3>3. Diversity Evaluator</h3>
-        <p>Embedding-based similarity scoring within rollout groups prevents mode collapse and ensures diverse prompts that resist KV cache replay defenses.</p>
+        <div class="step-number">3</div>
+        <h3>Diversity Evaluator</h3>
+        <p>Encourages the attacker to explore varied attack strategies rather than collapsing to repetitive prompts. For each group of prompts, we compute text embeddings and measure pairwise cosine similarities. Prompts dissimilar to others receive higher diversity rewards.</p>
       </div>
-      <div class="method-step">
-        <h3>4. Reference Model</h3>
-        <p>A frozen copy of the initial attacker provides KL regularization, maintaining semantic coherence so prompts remain on the natural language manifold.</p>
-      </div>
+    </div>
+
+    <div class="result-highlight">
+      <h3>Two-Stage Training Pipeline</h3>
+      <p><strong>Stage 1 (SFT):</strong> Supervised fine-tuning on adversarial prompts satisfying token budget L<sub>in</sub> &le; L<sub>budget</sub>, teaching reliable generation of valid short attack prompts. <strong>Stage 2 (RL):</strong> GRPO-based reinforcement learning where the attacker maximizes the constant-time surrogate reward combining length prediction and diversity components.</p>
     </div>
   </div>
 </section>
 
-<!-- ====== Results ====== -->
+<!-- ====== RQ1: Attack Effectiveness ====== -->
 <section>
   <div class="container">
-    <h2 class="section-title">Experimental Results</h2>
-    <p class="abstract-text" style="margin-bottom: 1.5rem;">
-      We evaluate ReasoningBomb on 10 victim models: 7 open-source (DeepSeek-V3, Kimi-K2, DeepSeek-R1, MiniMax-M2, Nemotron-3, Qwen3-30B, Qwen3-32B) and 3 commercial (Claude 4.5, GPT-5, Gemini 3).
+    <h2 class="section-title">RQ1: Attack Effectiveness</h2>
+    <p class="abstract-text section-intro">
+      We evaluate ReasoningBomb on <strong>10 victim models</strong>: 2 LLMs (DeepSeek-V3, Kimi-K2), 5 open-source LRMs (DeepSeek-R1, MiniMax-M2, Nemotron-3, Qwen3-30B, Qwen3-32B), and 3 commercial LRMs (Claude 4.5, GPT-5, Gemini 3).
     </p>
 
-    <!-- Reasoning Tokens -->
+    <div class="result-highlight">
+      <h3>Completion &amp; Reasoning Tokens</h3>
+      <p>ReasoningBomb (256-token budget) induces <strong>18,759 completion tokens</strong> on average across all 10 models (LLMs + LRMs), and <strong>19,263 reasoning tokens</strong> on average across LRMs, surpassing the runner-up by <strong>35%</strong> in completion tokens and <strong>38%</strong> in reasoning tokens.</p>
+    </div>
+
     <div class="figure-block">
-      <img src="static/figures/all_models_reasoning_by_dataset.png" alt="Reasoning token statistics across all victim models">
-      <p class="figure-caption"><strong>Figure 2.</strong> Reasoning token distribution across all 10 victim models. ReasoningBomb consistently induces 6&ndash;7&times; more tokens than benign queries and outperforms all baselines.</p>
+      <img src="static/figures/all_models_reasoning_by_dataset.png" alt="Bar chart showing reasoning token distribution across all 10 victim models, with ReasoningBomb consistently generating 6-7x more tokens than benign queries" loading="lazy">
+      <p class="figure-caption"><strong>Figure 2.</strong> Reasoning token distribution across all victim models. ReasoningBomb induces 6&ndash;7&times; more reasoning tokens than benign queries (SimpleQA: 1,222 tokens, SimpleBench: 4,276 tokens) and consistently outperforms all baselines.</p>
     </div>
 
-    <!-- Amplification + Correlation -->
-    <div class="results-grid">
-      <div class="figure-block">
-        <img src="static/figures/input_vs_output_combined.png" alt="Amplification analysis">
-        <p class="figure-caption"><strong>Figure 3.</strong> Amplification analysis: short prompts (&le;128 tokens) achieve the highest input-to-output ratios.</p>
-      </div>
-      <div class="figure-block">
-        <img src="static/figures/correlation_combined.png" alt="Surrogate predictor validation">
-        <p class="figure-caption"><strong>Figure 4.</strong> Surrogate predictor validation showing correlation between predicted and actual reasoning lengths.</p>
-      </div>
+    <div class="result-highlight">
+      <h3>Input-to-Output Amplification</h3>
+      <p>Using only <strong>60 input tokens</strong> on average, ReasoningBomb (128-token budget) induces 17,096 completion tokens, achieving <strong>286.69&times; amplification</strong>. Per-model average reaches <strong>301.98&times;</strong> (ranging from 39&times; to 640&times;), which is <strong>197%</strong> better than the runner-up.</p>
     </div>
 
-    <!-- Response Time + Server Sim -->
-    <div class="results-grid">
-      <div class="figure-block">
-        <img src="static/figures/response_time.png" alt="Constant-time evaluation speedup">
-        <p class="figure-caption"><strong>Figure 5.</strong> Constant-time surrogate reward (~0.2ms) vs. direct victim feedback (23&ndash;191s), achieving 439,000&times; speedup.</p>
-      </div>
-      <div class="figure-block">
-        <img src="static/figures/server_simulation.png" alt="Real-world impact simulation">
-        <p class="figure-caption"><strong>Figure 6.</strong> Real-world impact: 10% malicious traffic degrades benign throughput by up to 49.8% and monopolizes 64.3% of compute.</p>
-      </div>
+    <div class="figure-block">
+      <img src="static/figures/input_vs_output_combined.png" alt="Scatter plot showing input token count vs output token count, demonstrating high amplification ratios for short prompts" loading="lazy">
+      <p class="figure-caption"><strong>Figure 3.</strong> Amplification analysis: ReasoningBomb (green stars) achieves long outputs with short prompts. AutoDoS uses 5,215 input tokens for only 2.22&times; amplification; ICL uses 1,355 tokens for 5.85&times;, which are 129&times; and 49&times; worse than ours, respectively.</p>
     </div>
   </div>
 </section>
 
-<!-- ====== Defense ====== -->
+<!-- ====== RQ2: Constant-Time Surrogate Reward ====== -->
 <section>
   <div class="container">
-    <h2 class="section-title">Stealthiness Against Defenses</h2>
-    <p class="abstract-text" style="margin-bottom: 1.5rem;">
-      ReasoningBomb prompts evade multi-stage detection systems. Under the strictest dual-stage joint detection (input + output filtering), ReasoningBomb achieves a <strong>98.4% bypass rate</strong>, while token-manipulation baselines like AutoDoS and Engorgio are caught 100% of the time.
+    <h2 class="section-title">RQ2: Constant-Time Surrogate Reward</h2>
+    <p class="abstract-text section-intro">
+      A practical PI-DoS training signal must be both <em>informative</em> (correlates with victim reasoning length) and <em>constant-time</em> (cost does not grow with attack success). Our surrogate reward replaces expensive autoregressive generation with a single forward pass.
     </p>
 
-    <table class="properties-table">
+    <div class="result-highlight">
+      <h3>Surrogate Predictor Validation</h3>
+      <p>Our length predictor achieves strong correlation on the training victim (DeepSeek-R1-32B: Pearson r=<strong>0.7485</strong>) and transfers meaningfully to different architectures (Qwen3-32B: r=<strong>0.5563</strong>), with <strong>71&ndash;79%</strong> pairwise direction accuracy.</p>
+    </div>
+
+    <div class="figure-block">
+      <img src="static/figures/correlation_combined.png" alt="Correlation plot validating the surrogate predictor accuracy against actual reasoning lengths" loading="lazy">
+      <p class="figure-caption"><strong>Figure 4.</strong> Correlation between surrogate predictor and actual victim generation length. Training split: Pearson r=0.7485, direction accuracy 79.4%; validation split: r=0.5635, accuracy 70.9%; transfer to Qwen3-32B: r=0.5563, accuracy 70.8%.</p>
+    </div>
+
+    <div class="result-highlight">
+      <h3>Speedup over Direct Feedback</h3>
+      <p>Direct victim feedback grows from <strong>23.31s to 191.26s</strong> per query as attacks strengthen. Our surrogate remains constant at <strong>0.19&ndash;0.22ms</strong>, yielding <strong>4.39&times;10<sup>5</sup>&times;</strong> cumulative speedup.</p>
+    </div>
+
+    <div class="figure-block">
+      <img src="static/figures/response_time.png" alt="Bar chart comparing surrogate reward time (~0.2ms) vs direct victim feedback time (23-191 seconds)" loading="lazy">
+      <p class="figure-caption"><strong>Figure 5.</strong> Response time comparison. Direct victim feedback: 23.31s&rarr;191.26s per query (601.6s total over 7 queries). Our surrogate: 0.19&ndash;0.22ms per query (1.37ms total), enabling practical RL optimization.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ====== RQ3: Defense Evaluation ====== -->
+<section>
+  <div class="container">
+    <h2 class="section-title">RQ3: Stealthiness Against Defenses</h2>
+    <p class="abstract-text section-intro">
+      We evaluate against a strict dual-stage defense combining (1) input-side perplexity filter + LLM-as-judge, and (2) output-side LLM-as-judge on the first 2,000 tokens. ReasoningBomb achieves a <strong>98.4% bypass rate</strong> under joint detection.
+    </p>
+
+    <table class="properties-table defense-table" aria-label="Detection rates for different attack methods targeting Qwen3-32B">
       <thead>
         <tr>
-          <th>Method</th>
-          <th>Input Detection</th>
-          <th>Output Detection</th>
-          <th>Joint Detection</th>
+          <th scope="col">Method</th>
+          <th scope="col">Input Det.</th>
+          <th scope="col">Output Det.</th>
+          <th scope="col">Dual-Stage</th>
         </tr>
       </thead>
       <tbody>
         <tr>
           <td>AutoDoS</td>
-          <td>100%</td>
-          <td>&mdash;</td>
-          <td>100%</td>
+          <td class="detected">100.0%</td>
+          <td class="low">13.3%</td>
+          <td class="detected">100.0%</td>
         </tr>
         <tr>
           <td>Engorgio</td>
-          <td>100%</td>
-          <td>&mdash;</td>
-          <td>100%</td>
+          <td class="detected">100.0%</td>
+          <td class="bypassed">0.0%</td>
+          <td class="detected">100.0%</td>
         </tr>
         <tr>
           <td>CatAttack</td>
-          <td>2.7%</td>
-          <td>&mdash;</td>
-          <td>&mdash;</td>
+          <td class="low">2.7%</td>
+          <td class="bypassed">0.0%</td>
+          <td class="low">2.7%</td>
         </tr>
         <tr>
           <td>ICL</td>
-          <td>0%</td>
-          <td>2%</td>
-          <td>10%</td>
+          <td class="low">10.0%</td>
+          <td class="low">2.0%</td>
+          <td class="low">10.0%</td>
         </tr>
         <tr class="highlight-row">
-          <td>ReasoningBomb (Ours)</td>
-          <td>0.2%</td>
-          <td>1.3%</td>
-          <td>1.6%</td>
+          <td><strong>ReasoningBomb (Ours)</strong></td>
+          <td class="bypassed">0.2%</td>
+          <td class="bypassed">1.3%</td>
+          <td class="bypassed">1.6%</td>
         </tr>
       </tbody>
     </table>
+    <p class="table-note">Detection rates on Qwen3-32B (lower is better for attacker). Dual-stage combines input and output detection via OR-gate.</p>
+  </div>
+</section>
+
+<!-- ====== RQ4: Real-World Impact ====== -->
+<section>
+  <div class="container">
+    <h2 class="section-title">RQ4: Real-World Impact Simulation</h2>
+    <p class="abstract-text section-intro">
+      We simulate a production inference server (8&times;NVIDIA A100 node, FCFS queue) to measure how ReasoningBomb attacks impact benign user throughput under mixed traffic.
+    </p>
+
+    <div class="result-highlight">
+      <h3>Throughput Degradation &amp; Compute Monopolization</h3>
+      <p>At just <strong>10% malicious traffic</strong> with 32K response cap: benign throughput drops from 8.52 to 4.28 req/min (<strong>&minus;49.8%</strong>), while attackers monopolize <strong>64.3%</strong> of total compute time. Even 1% malicious requests occupy 20.7% of compute.</p>
+    </div>
+
+    <div class="figure-block">
+      <img src="static/figures/server_simulation.png" alt="Line charts showing (a) benign throughput degradation and (b) compute time occupation as malicious traffic increases" loading="lazy">
+      <p class="figure-caption"><strong>Figure 6.</strong> Real-world server simulation. (a) Benign User Processed (BUP) decreases as malicious ratio increases. (b) Computational Time Occupation (CTO) shows attackers dominate server resources. At 32K cap with 10% malicious traffic: &minus;49.8% throughput, 64.3% compute monopolized.</p>
+    </div>
   </div>
 </section>
 
@@ -268,23 +363,27 @@ title: "ReasoningBomb: A Stealthy Denial-of-Service Attack by Inducing Pathologi
 <section>
   <div class="container">
     <h2 class="section-title">Potential Defenses</h2>
-    <p class="abstract-text">
+    <p class="abstract-text section-intro">
       We discuss several promising directions for defending against PI-DoS attacks on LRMs:
     </p>
-    <div class="method-steps" style="margin-top:1.5rem;">
-      <div class="method-step">
+    <div class="defense-grid">
+      <div class="defense-card">
+        <div class="defense-icon"><i class="fas fa-memory"></i></div>
         <h3>KV Cache Reusing</h3>
         <p>Cache embeddings of known attack prompts to detect near-duplicates and skip expensive prefilling computation.</p>
       </div>
-      <div class="method-step">
+      <div class="defense-card">
+        <div class="defense-icon"><i class="fas fa-shield-alt"></i></div>
         <h3>Internal Red-Teaming</h3>
         <p>Proactively discover attack prompts using the ReasoningBomb framework itself, then use them for adversarial fine-tuning.</p>
       </div>
-      <div class="method-step">
+      <div class="defense-card">
+        <div class="defense-icon"><i class="fas fa-database"></i></div>
         <h3>Response Caching</h3>
         <p>Pre-compute and cache solutions for known attack patterns to eliminate redundant reasoning computation.</p>
       </div>
-      <div class="method-step">
+      <div class="defense-card">
+        <div class="defense-icon"><i class="fas fa-brain"></i></div>
         <h3>Adversarial Training</h3>
         <p>Fine-tune models to produce shorter reasoning traces when processing attack-like prompts without degrading benign performance.</p>
       </div>
@@ -296,26 +395,64 @@ title: "ReasoningBomb: A Stealthy Denial-of-Service Attack by Inducing Pathologi
 <section id="bibtex">
   <div class="container">
     <h2 class="section-title">Citation</h2>
+    <p class="abstract-text section-intro">
+      If you find our work useful, please cite our paper:
+    </p>
     <div class="bibtex-block">
-      <button class="copy-btn" onclick="copyBibtex()"><i class="fas fa-copy"></i> Copy</button>
-@article{liu2025reasoningbomb,
+      <button class="copy-btn" onclick="copyBibtex()" aria-label="Copy BibTeX to clipboard"><i class="fas fa-copy"></i> Copy</button>
+<code>@misc{liu2026reasoningbombstealthydenialofserviceattack,
   title={ReasoningBomb: A Stealthy Denial-of-Service Attack by Inducing
          Pathologically Long Reasoning in Large Reasoning Models},
-  author={Liu, Xiaogeng and Wang, Xinyan and Zhang, Yechao and
-          Kariyappa, Sanjay and Xiang, Chong and Chen, Muhao and
-          Suh, G. Edward and Xiao, Chaowei},
-  year={2025}
-}</div>
+  author={Xiaogeng Liu and Xinyan Wang and Yechao Zhang and Sanjay Kariyappa
+          and Chong Xiang and Muhao Chen and G. Edward Suh and Chaowei Xiao},
+  year={2026},
+  eprint={2602.00154},
+  archivePrefix={arXiv},
+  primaryClass={cs.CR},
+  url={https://arxiv.org/abs/2602.00154},
+}</code></div>
   </div>
 </section>
 
 <script>
 function copyBibtex() {
-  const text = document.querySelector('.bibtex-block').innerText.replace('Copy', '').trim();
-  navigator.clipboard.writeText(text).then(() => {
-    const btn = document.querySelector('.copy-btn');
-    btn.innerHTML = '<i class="fas fa-check"></i> Copied';
-    setTimeout(() => { btn.innerHTML = '<i class="fas fa-copy"></i> Copy'; }, 2000);
-  });
+  const codeBlock = document.querySelector('.bibtex-block code');
+  const text = codeBlock.textContent;
+
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(() => {
+      showCopySuccess();
+    }).catch(() => {
+      fallbackCopy(text);
+    });
+  } else {
+    fallbackCopy(text);
+  }
+}
+
+function fallbackCopy(text) {
+  const textarea = document.createElement('textarea');
+  textarea.value = text;
+  textarea.style.position = 'fixed';
+  textarea.style.opacity = '0';
+  document.body.appendChild(textarea);
+  textarea.select();
+  try {
+    document.execCommand('copy');
+    showCopySuccess();
+  } catch (err) {
+    console.error('Copy failed:', err);
+  }
+  document.body.removeChild(textarea);
+}
+
+function showCopySuccess() {
+  const btn = document.querySelector('.copy-btn');
+  btn.innerHTML = '<i class="fas fa-check"></i> Copied';
+  btn.classList.add('copied');
+  setTimeout(() => {
+    btn.innerHTML = '<i class="fas fa-copy"></i> Copy';
+    btn.classList.remove('copied');
+  }, 2000);
 }
 </script>
